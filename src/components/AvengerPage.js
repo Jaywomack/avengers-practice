@@ -1,20 +1,33 @@
 import React from 'react'
+import { Route, Link } from 'react-router-dom'
 
-import avengers from '..//avengersData'
-
-const AvengerPage = (props) => {
-  const id = props.match.params.id
-  const avenger = avengers.find(avenger => `${avenger.id}` === id)
-  return (
-    <div>
-      <img className='character-img' src={avenger.img} alt={avenger.name} />
-      <div className="character-info-wrapper">
-        <h1>{avenger.name}</h1>
-        <h4>({avenger.nickname})</h4>
-        <p>{CharacterData.description}</p>
-      </div>
-    </div>
-  )
+import AvengerDetails from './AvengerDetails'
+import AvengerMovies from './AvengerMovies'
+const AvengerPage = props => {
+	const id = props.match.params.id
+	const avenger = props.avengers.find(avenger => `${avenger.id}` === id)
+	return (
+		<div>
+			<img className='character-img' src={avenger.img} alt={avenger.name} />
+			<div className='character-info-wrapper'>
+				<h1>{avenger.name}</h1>
+				<h4>({avenger.nickname})</h4>
+				<p>{CharacterData.description}</p>
+			</div>
+			<Link to={`/avengers/${props.match.params.id}/details`}>
+				Avenger Details
+			</Link>
+			<Link to={`/avengers/${props.match.params.id}/movies`}>Movies</Link>
+			<Route
+				path='/avengers/:id/details'
+				render={props => <AvengerDetails details={avenger.description} />}
+			/>
+			<Route
+				path='/avengers/:id/movies'
+				render={props => <AvengerMovies movies={avenger.movies} />}
+			/>
+		</div>
+	)
 }
 
 export default AvengerPage
